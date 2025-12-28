@@ -160,6 +160,7 @@ function Parse-JsonFile([string]$file) {
     # To deserialize to a dictionary, use $parser.DeserializeObject($text) instead
 }
 
+Stop-Process -Name "OneDrive" -Force
 $steamMods = "$modDirectory/Steam"
 
 if (-not (Test-Path $steamMods)) {
@@ -186,7 +187,6 @@ Where-Object {
 Remove-Item -Force
 #>
 
-Stop-Process -Name "OneDrive" -Force
 $driver = Create-Browser -browser Edge
 $driver.Navigate().GoToUrl("https://steamcommunity.com/login/home")
 
