@@ -31,10 +31,32 @@ bereits erledigte Mods erneut anzufassen.
 - [Playwright](https://playwright.dev/python/) (`pip install playwright`)
 - Oxygen Not Included über Steam installiert
 
-Das Skript liegt in einem Unterordner `fixmods` des `mods`-Ordners:
+Das Skript muss in einem Unterordner des `mods`-Ordners liegen, z.B.:
 
 ```
-<Dokumente>/Klei/OxygenNotIncluded/mods/fixmods/fixmods.py
+<Dokumente>/Klei/OxygenNotIncluded/mods/ONI_FixMods/fixmods.py
+```
+
+Wie dieser Unterordner heißt, ist egal – das Skript ermittelt seinen
+`mods`-Ordner automatisch als übergeordnetes Verzeichnis.
+
+## Installation (Repo klonen)
+
+Im `mods`-Ordner von Oxygen Not Included klonen (Standardpfad unter Windows):
+
+```
+cd "$env:USERPROFILE\Documents\Klei\OxygenNotIncluded\mods"
+git clone https://github.com/YannicNoe/ONI_FixMods.git
+cd ONI_FixMods
+pip install playwright
+python -m playwright install chromium
+```
+
+Das legt den Ordner `mods\ONI_FixMods\fixmods.py` an – genau die Struktur,
+die das Skript erwartet. Danach von dort aus starten:
+
+```
+python fixmods.py --full
 ```
 
 ## Verwendung

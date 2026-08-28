@@ -2,12 +2,13 @@
 """
 FixMods - resubscribes broken Steam Workshop mods for Oxygen Not Included.
 
-Dieses Skript liegt in einem Unterordner "fixmods" des mods-Ordners:
-    <Dokumente>/Klei/OxygenNotIncluded/mods/fixmods/fixmods.py
+Dieses Skript liegt in einem Unterordner des mods-Ordners, z.B.:
+    <Dokumente>/Klei/OxygenNotIncluded/mods/ONI_FixMods/fixmods.py
 
-Der mods-Ordner ist also das uebergeordnete Verzeichnis. Alle Pfade werden von
-dort abgeleitet, deshalb ist es egal, ob Python als Administrator oder als
-normaler Benutzer laeuft.
+Wie dieser Unterordner heisst, ist egal (z.B. der Name, unter dem das
+GitHub-Repo geklont wurde) - der mods-Ordner ist einfach das uebergeordnete
+Verzeichnis. Alle Pfade werden von dort abgeleitet, deshalb ist es egal, ob
+Python als Administrator oder als normaler Benutzer laeuft.
 
 Liegt der mods-Ordner in einem OneDrive-Pfad, wird OneDrive bei --full und
 --resume hart beendet und am Ende wieder gestartet. Bei --backup und --restore
@@ -17,7 +18,7 @@ Ordnerstruktur:
     mods/
       mods.json              <- gelesen
       Steam/                 <- die eigentlichen Mods
-      fixmods/
+      <beliebiger Name>/     <- z.B. "ONI_FixMods", der Name des geklonten Repos
         fixmods.py           <- dieses Skript
         SteamModsBkp/        <- Backup
         FixMods.txt          <- Liste der kaputten Mods
@@ -463,7 +464,7 @@ def repair_round(args, status: StatusFile, steam_mods: Path,
 
     subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=True)
     with sync_playwright() as pw:
-        # Persistentes Profil im fixmods-Ordner: der Steam-Login bleibt erhalten,
+        # Persistentes Profil im Skript-Ordner: der Steam-Login bleibt erhalten,
         # egal ob elevated oder normal gestartet wird.
         context = pw.chromium.launch_persistent_context(
             user_data_dir=str(browser_profile), headless=False
@@ -583,7 +584,7 @@ def main() -> None:
     steam_mods = mod_dir / "Steam"
     mods_json = mod_dir / "mods.json"
 
-    # Alles, was das Skript selbst anlegt, bleibt im fixmods-Ordner
+    # Alles, was das Skript selbst anlegt, bleibt im Skript-Ordner
     backup_dir = SCRIPT_DIR / "SteamModsBkp"
     backup_list = SCRIPT_DIR / "FixMods.txt"
     status_file = SCRIPT_DIR / "FixModsStatus.txt"
@@ -597,7 +598,7 @@ def main() -> None:
     if needs_mods_json and not mods_json.is_file():
         sys.exit(f"[FEHLER] mods.json nicht gefunden: {mods_json}\n"
                  f"Erwartet wird fixmods.py in einem Unterordner des mods-Ordners, "
-                 f"also .../OxygenNotIncluded/mods/fixmods/fixmods.py")
+                 f"also .../OxygenNotIncluded/mods/{SCRIPT_DIR.name}/fixmods.py")
 
     # Ordner anlegen, SOLANGE OneDrive noch laeuft. Ein hart beendeter
     # OneDrive-Prozess laesst mkdir im synchronisierten Dokumente-Ordner
